@@ -71,8 +71,16 @@ Step 4: 후보 평가
 
 ### 인덱스 초기화 방식
 - `Chroma.from_documents()` 로 초기 빌드
-- `persist_directory` 로 로컬 저장
+- `persist_directory` 로 로컬 저장 (`.chroma/`)
 - manifest.json 기반 증분 업데이트 지원
+
+**중요: 인덱스 빌드는 서버 기동과 분리된다.**
+- 인덱스 빌드: `python scripts/ingest.py` (수동, 문서 변경 시)
+- 서버 기동: `uvicorn src.api.main:app` (인덱스 존재 시에만 정상 기동)
+- 서버 lifespan 이벤트에서 `.chroma/` 존재 여부를 검증하며, 없으면 즉시 종료
+- `Chroma.from_documents()`는 서버 코드에서 절대 호출하지 않는다
+
+관련 상세: `ai-work/plans/ingest-separation.md`
 
 ---
 
