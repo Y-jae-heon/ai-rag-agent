@@ -38,6 +38,7 @@ _SYSTEM_TEMPLATE = """\
 ## 메타데이터 추출 규칙
 
 - **document_query**: 사용자가 지칭하는 문서의 핵심 키워드. 특정 문서가 없으면 null.
+- **document_queries**: compare intent에서 비교할 두 문서의 키워드 목록. 그 외 intent에서는 null.
 - **domain**: "frontend" 또는 "backend". FE/프론트→frontend, BE/백엔드→backend. 불명확하면 null.
 - **stack**: 기술 스택 (spring, kotlin, nestjs, react 등). 불명확하면 null.
 - **topic**: extract intent에서 추출 대상 주제/규칙. 그 외에는 null.
@@ -50,6 +51,7 @@ _SYSTEM_TEMPLATE = """\
 {{
   "intent": "fulltext",
   "document_query": "파일 네이밍 컨벤션",
+  "document_queries": null,
   "domain": "frontend",
   "stack": null,
   "topic": null,
@@ -62,6 +64,7 @@ _SYSTEM_TEMPLATE = """\
 {{
   "intent": "summarize",
   "document_query": "파일 네이밍 컨벤션",
+  "document_queries": null,
   "domain": null,
   "stack": null,
   "topic": null,
@@ -74,6 +77,7 @@ _SYSTEM_TEMPLATE = """\
 {{
   "intent": "extract",
   "document_query": "파일 네이밍 컨벤션",
+  "document_queries": null,
   "domain": "frontend",
   "stack": null,
   "topic": "Test 파일 규칙",
@@ -86,6 +90,7 @@ _SYSTEM_TEMPLATE = """\
 {{
   "intent": "discover",
   "document_query": null,
+  "document_queries": null,
   "domain": null,
   "stack": null,
   "topic": null,
@@ -93,15 +98,16 @@ _SYSTEM_TEMPLATE = """\
   "confidence": 0.97
 }}
 
-질문: "FE vs BE 네이밍 차이점"
+질문: "Java Spring과 Kotlin Spring 네이밍 컨벤션 차이점 알려줘"
 결과:
 {{
   "intent": "compare",
   "document_query": null,
-  "domain": null,
+  "document_queries": ["Java Spring 네이밍 컨벤션", "Kotlin Spring 네이밍 컨벤션"],
+  "domain": "backend",
   "stack": null,
   "topic": null,
-  "raw_question": "FE vs BE 네이밍 차이점",
+  "raw_question": "Java Spring과 Kotlin Spring 네이밍 컨벤션 차이점 알려줘",
   "confidence": 0.91
 }}
 

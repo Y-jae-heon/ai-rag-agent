@@ -23,6 +23,10 @@ class QueryUnderstandingResult(BaseModel):
         default=None,
         description="검색할 문서명 또는 문서 키워드. 특정 문서를 지칭하지 않으면 null.",
     )
+    document_queries: list[str] | None = Field(
+        default=None,
+        description="compare intent에서 비교할 두 문서의 키워드 목록. compare 외에는 null.",
+    )
     domain: Literal["frontend", "backend"] | None = Field(
         default=None,
         description="질문이 특정 도메인(frontend/backend)에 한정된 경우. 불명확하면 null.",

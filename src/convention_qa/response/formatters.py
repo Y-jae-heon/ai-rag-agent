@@ -164,6 +164,30 @@ def format_extract(
     return f"{answer_text}{footer}"
 
 
+def format_compare(
+    title_a: str,
+    title_b: str,
+    comparison_text: str,
+    path_a: str,
+    path_b: str,
+) -> str:
+    """두 문서 비교 결과를 구조화된 포맷으로 반환한다.
+
+    형식:
+        ## {title_a} vs {title_b} 비교
+
+        {comparison_text}
+
+        > 출처: {title_a} (`{path_a}`), {title_b} (`{path_b}`)
+
+    Returns:
+        두 문서 비교 결과 문자열.
+    """
+    header = f"## {title_a} vs {title_b} 비교\n\n"
+    footer = f"\n\n> 출처: {title_a} (`{path_a}`), {title_b} (`{path_b}`)"
+    return f"{header}{comparison_text}{footer}"
+
+
 def format_not_found(document_query: str | None) -> str:
     """문서를 찾지 못한 경우 안내 메시지를 반환한다.
 

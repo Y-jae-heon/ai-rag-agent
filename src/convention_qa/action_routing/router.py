@@ -43,6 +43,8 @@ class ActionRouter:
         ("extract", False): "ExtractHandler",
         ("discover", True): "DiscoverHandler",
         ("discover", False): "DiscoverHandler",
+        ("compare", True): "CompareHandler",
+        ("compare", False): "CompareHandler",
     }
 
     def route(self, intent: str, resolved: bool) -> BaseHandler:
@@ -63,7 +65,7 @@ class ActionRouter:
         # resolved=False이면 문서 미해결이므로 항상 ClarifyHandler
         if not resolved:
             # discover는 resolved 여부와 무관하게 동작 가능하나, P0에서는 stub
-            if intent not in ("discover", "extract"):
+            if intent not in ("discover", "extract", "compare"):
                 return ClarifyHandler()
 
         handler_name = self.HANDLER_MAP.get((intent, resolved))
@@ -101,6 +103,10 @@ class ActionRouter:
             from src.convention_qa.action_routing.discover_handler import DiscoverHandler  # noqa: PLC0415
             return DiscoverHandler()
 
+        if handler_name == "CompareHandler":
+            from src.convention_qa.action_routing.compare_handler import CompareHandler  # noqa: PLC0415
+            return CompareHandler()
+
         return ClarifyHandler()
 
     def route_and_execute(
@@ -127,5 +133,6 @@ class ActionRouter:
             question=question,
             intent=understanding.intent,
             resolution=resolution,
+            understanding=understanding,
         )
         return handler.handle(context)

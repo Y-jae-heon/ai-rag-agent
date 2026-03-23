@@ -10,6 +10,7 @@ from src.convention_qa.action_routing.base_handler import (
     HandlerResult,
 )
 from src.convention_qa.action_routing.clarify_handler import ClarifyHandler
+from src.convention_qa.action_routing.compare_handler import CompareHandler
 from src.convention_qa.action_routing.discover_handler import DiscoverHandler
 from src.convention_qa.action_routing.extract_handler import ExtractHandler
 from src.convention_qa.action_routing.router import ActionRouter
@@ -21,6 +22,7 @@ __all__ = [
     "HandlerContext",
     "HandlerResult",
     "ClarifyHandler",
+    "CompareHandler",
     "SummarizeHandler",
     "ExtractHandler",
     "DiscoverHandler",

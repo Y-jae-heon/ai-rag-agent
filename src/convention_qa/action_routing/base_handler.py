@@ -27,6 +27,10 @@ class HandlerContext(BaseModel):
     resolution: Any = Field(
         description="DocumentResolutionResult 인스턴스. TK-02에서 타입 구체화 예정."
     )
+    understanding: Any = Field(
+        default=None,
+        description="QueryUnderstandingResult 인스턴스. compare handler에서 document_queries 접근에 사용.",
+    )
 
     model_config = {"arbitrary_types_allowed": True}
 
