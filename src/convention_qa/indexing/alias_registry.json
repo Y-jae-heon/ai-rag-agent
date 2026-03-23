@@ -1,56 +1,380 @@
 {
-  "322e63c6fa97808e80a1da80614e7edf": ["context api", "컨텍스트 API", "Context API 사용법", "리액트 컨텍스트"],
-  "325e63c6fa97806ab2e1d8bfe2e2c386": ["FSD feature", "feature 구조", "피처 구조 규칙", "FSD feature layer"],
-  "325e63c6fa9780c0806aea7d1ce661f5": ["FSD UI", "UI 구조 규칙", "FSD UI layer", "컴포넌트 구조"],
-  "325e63c6fa97802f89b8dcee3d525380": ["FSD 레이어", "layer 구조", "FSD layer rules", "레이어 구조 규칙"],
-  "325e63c6fa978067a124e0c68833a066": ["FSD 개요", "FSD 아키텍처", "feature sliced design", "FSD overview"],
-  "322e63c6fa9780119c4ed1a23c731d27": ["git branch", "브랜치 전략", "브랜치 규칙", "branch strategy"],
-  "322e63c6fa97808fb256dcb1cc10171b": ["git commit", "커밋 메시지", "commit message", "git message convention"],
-  "322e63c6fa978079af54d3d34b1fb0d2": ["PR 템플릿", "pull request template", "깃 PR", "git PR"],
-  "325e63c6fa97806db633e49ff92df394": ["git 협업", "git convention overview", "git 컨벤션 개요", "협업 컨벤션"],
-  "325e63c6fa978010919de697a0b551bc": ["네이밍 개요", "naming convention overview", "네이밍 컨벤션 요약", "naming summary"],
-  "325e63c6fa97801ca218c5dcf6379250": ["네이밍 원칙", "naming principles", "네이밍 일반 원칙", "naming general"],
-  "325e63c6fa97800b85c4fcdca75a7927": ["변수 선언", "함수 컴포넌트 선언", "variable declaration", "function component declaration"],
-  "325e63c6fa9780648494cff1ba3cfccd": ["타입 선언", "인터페이스 선언", "type declaration", "interface convention"],
-  "325e63c6fa9780149d90e16c61f7f0e2": ["file naming", "파일명 규칙", "파일명 컨벤션", "file name convention"],
-  "325e63c6fa9780d397e9f7a3989944d5": ["folder naming", "폴더명 규칙", "폴더명 컨벤션", "directory naming"],
-  "322e63c6fa97804bb9edd3e783536dd7": ["FSD README", "FSD readme template", "아키텍처 README", "FSD 템플릿"],
-  "321e63c6fa978037bf7eef5e724c8523": ["java aop", "AOP", "aspect oriented programming", "스프링 AOP", "Java AOP"],
-  "321e63c6fa9780f590e5eff3166b0228": ["java querydsl", "QueryDSL", "자바 쿼리DSL", "Java QueryDSL"],
-  "321e63c6fa978002a80ffc035b17fd52": ["java 날짜", "java 시간", "날짜와 시간", "LocalDate", "Java date time"],
-  "321e63c6fa9780898a30ee62ba635d00": ["java 네이밍", "java naming", "자바 네이밍 컨벤션", "Java naming convention"],
-  "321e63c6fa978016a33df907ec4ae53d": ["java datasource", "데이터소스", "데이터 소스 관리", "Java data source"],
-  "321e63c6fa9780539a1fc5697d936a06": ["java repository", "레포지토리 패턴", "Java repository pattern", "repository code"],
-  "321e63c6fa9780e8b403e2d42ee772ac": ["java service", "서비스 패턴", "Java service pattern", "service code"],
-  "321e63c6fa97805ab240ee0d136fa38a": ["java entity", "엔티티 패턴", "Java entity pattern", "entity code"],
-  "321e63c6fa9780bd98f1c308e769e176": ["java controller", "컨트롤러 패턴", "Java controller pattern", "controller code"],
-  "321e63c6fa978078bf58d8b7a2aeb440": ["java global package", "글로벌 패키지", "Java global package", "공통 패키지"],
-  "321e63c6fa9780aa9113c01339503fe6": ["java package structure", "자바 패키지 구조", "Java layered architecture package", "패키지 구조"],
-  "321e63c6fa9780c19586e9290391077d": ["java logging", "자바 로깅", "Java logging convention", "로깅"],
-  "321e63c6fa97801287a3f9314c3241b1": ["java security", "자바 보안", "Java security basics", "보안 기본"],
-  "321e63c6fa978039bbebfc46d006f7aa": ["java 의존성 주입", "DI", "dependency injection", "Java DI", "스프링 DI"],
-  "321e63c6fa9780dd8fb9d48f1637d78c": ["java 트랜잭션", "transaction management", "Java transaction", "스프링 트랜잭션"],
-  "321e63c6fa9780169edbd3d21a1c0d4f": ["java 예외 처리", "exception handling", "Java exception", "에러 처리"],
-  "321e63c6fa9780ce801fcdb367f3cf42": ["java 테스트", "test convention", "Java test code", "테스트 코드 컨벤션"],
-  "321e63c6fa978075a22cea0745e2464d": ["kotlin 특화", "kotlin guide", "Kotlin specific guide", "코틀린 가이드"],
-  "321e63c6fa978060b6a2dba744be3505": ["kotlin querydsl", "Kotlin QueryDSL", "코틀린 쿼리DSL"],
-  "321e63c6fa97803b89ccd1405f47a9d1": ["kotlin 날짜", "kotlin 시간", "Kotlin date time", "코틀린 날짜"],
-  "321e63c6fa97808e852cfc87d66c5fc0": ["kotlin 네이밍", "kotlin naming", "Kotlin naming convention", "코틀린 네이밍"],
-  "321e63c6fa9780b79997f1e4a0e45492": ["kotlin 아키텍처", "Kotlin architecture", "코틀린 코드 아키텍처", "kotlin layered architecture"],
-  "321e63c6fa9780fcac79dbcf5d0d41eb": ["kotlin 패키지 구조", "Kotlin package structure", "코틀린 패키지", "kotlin package"],
-  "321e63c6fa97800b8911d7307e421f50": ["kotlin 로깅", "Kotlin logging", "코틀린 로깅"],
-  "321e63c6fa978020bdafdb3dc0e6d153": ["kotlin 보안", "Kotlin security", "코틀린 보안"],
-  "321e63c6fa978063bf6cdac5931b6160": ["kotlin 스프링 패턴", "Kotlin spring pattern", "코틀린 스프링"],
-  "321e63c6fa9780348708f402e6f88dc4": ["kotlin 테스트", "Kotlin test convention", "코틀린 테스트 코드"],
-  "321e63c6fa97801cabb3cdd40739a181": ["nestjs 워크플로우", "NestJS workflow", "개발 워크플로우", "typescript workflow"],
-  "321e63c6fa97809fb348e2280115afe6": ["nestjs 공통", "NestJS common practices", "공통 실천 사항"],
-  "321e63c6fa9780e2b9a0c55e038a3f29": ["nestjs 네이밍", "NestJS naming", "타입스크립트 네이밍", "Typescript naming convention"],
-  "321e63c6fa978062b57ac64f2d482abb": ["nestjs DTO", "DTO 패턴", "NestJS DTO pattern", "data transfer object"],
-  "321e63c6fa9780379acbd1a5dcf4ccc3": ["nestjs repository", "NestJS repository pattern", "타입스크립트 레포지토리"],
-  "321e63c6fa9780aebfcccd454d31c824": ["nestjs service", "NestJS service pattern", "타입스크립트 서비스 패턴"],
-  "321e63c6fa9780f7ac7cd242be150e8d": ["nestjs entity", "NestJS entity pattern", "타입스크립트 엔티티"],
-  "321e63c6fa97804bad83eb190a400a82": ["nestjs controller", "NestJS controller pattern", "타입스크립트 컨트롤러"],
-  "321e63c6fa978017a946c1074781b778": ["nestjs directory", "NestJS directory structure", "디렉토리 구조", "타입스크립트 폴더 구조"],
-  "321e63c6fa97808ea07cd8354c662a81": ["nestjs utility", "NestJS utility", "유틸리티 모듈", "공통 모듈"],
-  "321e63c6fa9780619ddfd42fd19f502a": ["nestjs domain module", "NestJS domain", "도메인 모듈", "코드 아키텍처 도메인"]
+  "322e63c6fa97808e80a1da80614e7edf": {
+    "title": "Context API 사용 가이드",
+    "aliases": ["context api", "컨텍스트 API", "Context API 사용법", "리액트 컨텍스트", "react context"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "api"
+  },
+  "325e63c6fa97806ab2e1d8bfe2e2c386": {
+    "title": "FSD 레이어드 아키텍처 - Feature 구조 규칙",
+    "aliases": ["FSD feature", "feature 구조", "피처 구조 규칙", "FSD feature layer", "feature layer 규칙"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "fsd"
+  },
+  "325e63c6fa9780c0806aea7d1ce661f5": {
+    "title": "FSD 레이어드 아키텍처 - UI 구조 규칙",
+    "aliases": ["FSD UI", "UI 구조 규칙", "FSD UI layer", "컴포넌트 구조", "UI layer 규칙"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "fsd"
+  },
+  "325e63c6fa97802f89b8dcee3d525380": {
+    "title": "FSD 레이어드 아키텍처 - 레이어 구조 규칙",
+    "aliases": ["FSD 레이어", "layer 구조", "FSD layer rules", "레이어 구조 규칙", "FSD 레이어 규칙"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "fsd"
+  },
+  "325e63c6fa978067a124e0c68833a066": {
+    "title": "FSD 레이어드 아키텍처 개요",
+    "aliases": ["FSD 개요", "FSD 아키텍처", "feature sliced design", "FSD overview", "FSD 소개"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "fsd"
+  },
+  "322e63c6fa9780119c4ed1a23c731d27": {
+    "title": "Git Branch 전략",
+    "aliases": ["git branch", "브랜치 전략", "브랜치 규칙", "branch strategy", "git 브랜치"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "git"
+  },
+  "322e63c6fa97808fb256dcb1cc10171b": {
+    "title": "Git Message 컨벤션",
+    "aliases": ["git commit", "커밋 메시지", "commit message", "git message convention", "git 커밋"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "git"
+  },
+  "322e63c6fa978079af54d3d34b1fb0d2": {
+    "title": "Git PR 템플릿",
+    "aliases": ["PR 템플릿", "pull request template", "깃 PR", "git PR", "PR 작성법"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "git"
+  },
+  "325e63c6fa97806db633e49ff92df394": {
+    "title": "Git 협업 컨벤션 개요",
+    "aliases": ["git 협업", "git convention overview", "git 컨벤션 개요", "협업 컨벤션", "git 협업 개요"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "git"
+  },
+  "325e63c6fa978010919de697a0b551bc": {
+    "title": "네이밍 컨벤션 개요 - 총체 요약 문서",
+    "aliases": ["네이밍 개요", "naming convention overview", "네이밍 컨벤션 요약", "naming summary", "네이밍 총체"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "naming"
+  },
+  "325e63c6fa97801ca218c5dcf6379250": {
+    "title": "네이밍 컨벤션 일반 원칙",
+    "aliases": ["네이밍 원칙", "naming principles", "네이밍 일반 원칙", "naming general", "네이밍 기본 원칙"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "naming"
+  },
+  "325e63c6fa97800b85c4fcdca75a7927": {
+    "title": "변수 및 함수 컴포넌트 선언 컨벤션",
+    "aliases": ["변수 선언", "함수 컴포넌트 선언", "variable declaration", "function component declaration", "변수 컨벤션"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "naming"
+  },
+  "325e63c6fa9780648494cff1ba3cfccd": {
+    "title": "타입 및 인터페이스 선언 컨벤션",
+    "aliases": ["타입 선언", "인터페이스 선언", "type declaration", "interface convention", "타입스크립트 타입 컨벤션"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "naming"
+  },
+  "325e63c6fa9780149d90e16c61f7f0e2": {
+    "title": "파일 네이밍 컨벤션",
+    "aliases": ["file naming", "파일명 규칙", "파일명 컨벤션", "file name convention", "파일 이름 규칙"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "naming"
+  },
+  "325e63c6fa9780d397e9f7a3989944d5": {
+    "title": "폴더 네이밍 컨벤션",
+    "aliases": ["folder naming", "폴더명 규칙", "폴더명 컨벤션", "directory naming", "디렉토리 네이밍"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "naming"
+  },
+  "322e63c6fa97804bb9edd3e783536dd7": {
+    "title": "FSD 레이어드 아키텍처 README 템플릿",
+    "aliases": ["FSD README", "FSD readme template", "아키텍처 README", "FSD 템플릿", "FSD readme"],
+    "domain": "frontend",
+    "stack": "react",
+    "topic": "fsd"
+  },
+  "321e63c6fa978037bf7eef5e724c8523": {
+    "title": "Java(Spring) AoP",
+    "aliases": ["java aop", "AOP", "aspect oriented programming", "스프링 AOP", "Java AOP", "관점 지향 프로그래밍"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780f590e5eff3166b0228": {
+    "title": "Java(Spring) QueryDSL",
+    "aliases": ["java querydsl", "QueryDSL", "자바 쿼리DSL", "Java QueryDSL", "querydsl 사용법"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "database"
+  },
+  "321e63c6fa978002a80ffc035b17fd52": {
+    "title": "Java(Spring) 날짜와 시간",
+    "aliases": ["java 날짜", "java 시간", "날짜와 시간", "LocalDate", "Java date time", "자바 날짜 시간"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "datetime"
+  },
+  "321e63c6fa9780898a30ee62ba635d00": {
+    "title": "Java(Spring) 네이밍 컨벤션",
+    "aliases": ["java 네이밍", "java naming", "자바 네이밍 컨벤션", "Java naming convention", "자바 이름 규칙"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "naming"
+  },
+  "321e63c6fa978016a33df907ec4ae53d": {
+    "title": "Java(Spring) 데이터 소스 관리",
+    "aliases": ["java datasource", "데이터소스", "데이터 소스 관리", "Java data source", "DB 연결 설정"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "database"
+  },
+  "321e63c6fa9780539a1fc5697d936a06": {
+    "title": "Java(Spring) 레이어드 아키텍처 - 레포지토리 코드 패턴",
+    "aliases": ["java repository", "레포지토리 패턴", "Java repository pattern", "repository code", "자바 레포지토리"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780e8b403e2d42ee772ac": {
+    "title": "Java(Spring) 레이어드 아키텍처 - 서비스 코드 패턴",
+    "aliases": ["java service", "서비스 패턴", "Java service pattern", "service code", "자바 서비스"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "pattern"
+  },
+  "321e63c6fa97805ab240ee0d136fa38a": {
+    "title": "Java(Spring) 레이어드 아키텍처 - 엔티티 코드 패턴",
+    "aliases": ["java entity", "엔티티 패턴", "Java entity pattern", "entity code", "자바 엔티티"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780bd98f1c308e769e176": {
+    "title": "Java(Spring) 레이어드 아키텍처 - 컨트롤러 코드 패턴",
+    "aliases": ["java controller", "컨트롤러 패턴", "Java controller pattern", "controller code", "자바 컨트롤러"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "pattern"
+  },
+  "321e63c6fa978078bf58d8b7a2aeb440": {
+    "title": "Java(Spring) 레이어드 아키텍처 글로벌 패키지",
+    "aliases": ["java global package", "글로벌 패키지", "Java global package", "공통 패키지", "자바 글로벌 패키지"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "architecture"
+  },
+  "321e63c6fa9780aa9113c01339503fe6": {
+    "title": "Java(Spring) 레이어드 아키텍처 패키지 구조",
+    "aliases": ["java package structure", "자바 패키지 구조", "Java layered architecture package", "패키지 구조", "자바 레이어드 패키지"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "architecture"
+  },
+  "321e63c6fa9780c19586e9290391077d": {
+    "title": "Java(Spring) 로깅",
+    "aliases": ["java logging", "자바 로깅", "Java logging convention", "로깅", "스프링 로깅"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "logging"
+  },
+  "321e63c6fa97801287a3f9314c3241b1": {
+    "title": "Java(Spring) 보안 기본",
+    "aliases": ["java security", "자바 보안", "Java security basics", "보안 기본", "스프링 보안"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "security"
+  },
+  "321e63c6fa978039bbebfc46d006f7aa": {
+    "title": "Java(Spring) 스프링 의존성 주입",
+    "aliases": ["java 의존성 주입", "DI", "dependency injection", "Java DI", "스프링 DI", "의존성 주입"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "dependency"
+  },
+  "321e63c6fa9780dd8fb9d48f1637d78c": {
+    "title": "Java(Spring) 스프링 트랜잭션 관리",
+    "aliases": ["java 트랜잭션", "transaction management", "Java transaction", "스프링 트랜잭션", "트랜잭션 관리"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "transaction"
+  },
+  "321e63c6fa9780169edbd3d21a1c0d4f": {
+    "title": "Java(Spring) 예외 처리",
+    "aliases": ["java 예외 처리", "exception handling", "Java exception", "에러 처리", "자바 예외"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "exception"
+  },
+  "321e63c6fa9780ce801fcdb367f3cf42": {
+    "title": "Java(Spring) 테스트 코드 컨벤션",
+    "aliases": ["java 테스트", "test convention", "Java test code", "테스트 코드 컨벤션", "자바 테스트"],
+    "domain": "backend",
+    "stack": "java",
+    "topic": "testing"
+  },
+  "321e63c6fa978075a22cea0745e2464d": {
+    "title": "Kotlin(Spring) Kotlin 특화 가이드",
+    "aliases": ["kotlin 특화", "kotlin guide", "Kotlin specific guide", "코틀린 가이드", "kotlin 특화 기능"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "overview"
+  },
+  "321e63c6fa978060b6a2dba744be3505": {
+    "title": "Kotlin(Spring) QueryDSL",
+    "aliases": ["kotlin querydsl", "Kotlin QueryDSL", "코틀린 쿼리DSL", "kotlin querydsl 사용법"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "database"
+  },
+  "321e63c6fa97803b89ccd1405f47a9d1": {
+    "title": "Kotlin(Spring) 날짜와 시간",
+    "aliases": ["kotlin 날짜", "kotlin 시간", "Kotlin date time", "코틀린 날짜", "코틀린 시간"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "datetime"
+  },
+  "321e63c6fa97808e852cfc87d66c5fc0": {
+    "title": "Kotlin(Spring) 네이밍 컨벤션",
+    "aliases": ["kotlin 네이밍", "kotlin naming", "Kotlin naming convention", "코틀린 네이밍", "코틀린 이름 규칙"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "naming"
+  },
+  "321e63c6fa9780b79997f1e4a0e45492": {
+    "title": "Kotlin(Spring) 레이어드 아키텍처 코드 아키텍처",
+    "aliases": ["kotlin 아키텍처", "Kotlin architecture", "코틀린 코드 아키텍처", "kotlin layered architecture", "코틀린 레이어드"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "architecture"
+  },
+  "321e63c6fa9780fcac79dbcf5d0d41eb": {
+    "title": "Kotlin(Spring) 레이어드 아키텍처 패키지 구조",
+    "aliases": ["kotlin 패키지 구조", "Kotlin package structure", "코틀린 패키지", "kotlin package", "코틀린 패키지 구조"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "architecture"
+  },
+  "321e63c6fa97800b8911d7307e421f50": {
+    "title": "Kotlin(Spring) 로깅",
+    "aliases": ["kotlin 로깅", "Kotlin logging", "코틀린 로깅", "kotlin 로그"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "logging"
+  },
+  "321e63c6fa978020bdafdb3dc0e6d153": {
+    "title": "Kotlin(Spring) 보안",
+    "aliases": ["kotlin 보안", "Kotlin security", "코틀린 보안", "kotlin security"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "security"
+  },
+  "321e63c6fa978063bf6cdac5931b6160": {
+    "title": "Kotlin(Spring) 스프링 패턴",
+    "aliases": ["kotlin 스프링 패턴", "Kotlin spring pattern", "코틀린 스프링", "kotlin spring", "코틀린 스프링 패턴"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780348708f402e6f88dc4": {
+    "title": "Kotlin(Spring) 테스트 코드 컨벤션",
+    "aliases": ["kotlin 테스트", "Kotlin test convention", "코틀린 테스트 코드", "kotlin test", "코틀린 테스트"],
+    "domain": "backend",
+    "stack": "kotlin",
+    "topic": "testing"
+  },
+  "321e63c6fa97801cabb3cdd40739a181": {
+    "title": "Typescript(NestJS) 개발 워크플로우",
+    "aliases": ["nestjs 워크플로우", "NestJS workflow", "개발 워크플로우", "typescript workflow", "nestjs 개발 흐름"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "workflow"
+  },
+  "321e63c6fa97809fb348e2280115afe6": {
+    "title": "Typescript(NestJS) 공통 실천 사항",
+    "aliases": ["nestjs 공통", "NestJS common practices", "공통 실천 사항", "nestjs 공통 관행", "NestJS best practices"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "overview"
+  },
+  "321e63c6fa9780e2b9a0c55e038a3f29": {
+    "title": "Typescript(NestJS) 네이밍 컨벤션",
+    "aliases": ["nestjs 네이밍", "NestJS naming", "타입스크립트 네이밍", "Typescript naming convention", "nestjs 이름 규칙"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "naming"
+  },
+  "321e63c6fa978062b57ac64f2d482abb": {
+    "title": "Typescript(NestJS) 레이어드 아키텍처 - DTO 코드 패턴",
+    "aliases": ["nestjs DTO", "DTO 패턴", "NestJS DTO pattern", "data transfer object", "nestjs dto"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780379acbd1a5dcf4ccc3": {
+    "title": "Typescript(NestJS) 레이어드 아키텍처 - 레포지토리 코드 패턴",
+    "aliases": ["nestjs repository", "NestJS repository pattern", "타입스크립트 레포지토리", "nestjs 레포지토리"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780aebfcccd454d31c824": {
+    "title": "Typescript(NestJS) 레이어드 아키텍처 - 서비스 코드 패턴",
+    "aliases": ["nestjs service", "NestJS service pattern", "타입스크립트 서비스 패턴", "nestjs 서비스"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "pattern"
+  },
+  "321e63c6fa9780f7ac7cd242be150e8d": {
+    "title": "Typescript(NestJS) 레이어드 아키텍처 - 엔티티 코드 패턴",
+    "aliases": ["nestjs entity", "NestJS entity pattern", "타입스크립트 엔티티", "nestjs 엔티티"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "pattern"
+  },
+  "321e63c6fa97804bad83eb190a400a82": {
+    "title": "Typescript(NestJS) 레이어드 아키텍처 - 컨트롤러 코드 패턴",
+    "aliases": ["nestjs controller", "NestJS controller pattern", "타입스크립트 컨트롤러", "nestjs 컨트롤러"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "pattern"
+  },
+  "321e63c6fa978017a946c1074781b778": {
+    "title": "Typescript(NestJS) 레이어드 아키텍처 디렉토리 구조",
+    "aliases": ["nestjs directory", "NestJS directory structure", "디렉토리 구조", "타입스크립트 폴더 구조", "nestjs 폴더 구조"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "architecture"
+  },
+  "321e63c6fa97808ea07cd8354c662a81": {
+    "title": "Typescript(NestJS) 유틸리티 및 공통 모듈",
+    "aliases": ["nestjs utility", "NestJS utility", "유틸리티 모듈", "공통 모듈", "nestjs 유틸리티"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "utility"
+  },
+  "321e63c6fa9780619ddfd42fd19f502a": {
+    "title": "Typescript(NestJS) 코드 아키텍처 - 도메인 모듈",
+    "aliases": ["nestjs domain module", "NestJS domain", "도메인 모듈", "코드 아키텍처 도메인", "nestjs 도메인"],
+    "domain": "backend",
+    "stack": "nestjs",
+    "topic": "architecture"
+  }
 }

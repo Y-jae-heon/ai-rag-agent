@@ -22,9 +22,11 @@ class ActionRouter:
     HANDLER_MAP에 등록된 (intent, resolved) 키에 해당하는 handler 클래스를
     인스턴스화하여 반환한다.
 
-    P0 단계 구현 상태:
-    - fulltext + resolved=True: FulltextHandler (TK-03에서 구현 예정, 현재 ClarifyHandler fallback)
-    - summarize, extract, discover: ClarifyHandler fallback (stub)
+    P1 단계 구현 상태:
+    - fulltext + resolved=True: FulltextHandler
+    - summarize + resolved=True: SummarizeHandler
+    - extract + resolved=True/False: ExtractHandler
+    - discover + resolved=True/False: DiscoverHandler
     - 매핑에 없는 경우: ClarifyHandler fallback
 
     Example:
@@ -35,12 +37,12 @@ class ActionRouter:
 
     # handler 문자열 이름 매핑
     HANDLER_MAP: dict[tuple[str, bool], str] = {
-        ("fulltext", True): "FulltextHandler",    # TK-03 구현 완료
-        ("summarize", True): "SummarizeHandler",  # stub
-        ("extract", True): "ExtractHandler",      # stub
-        ("extract", False): "ExtractHandler",     # stub
-        ("discover", True): "DiscoverHandler",    # stub
-        ("discover", False): "DiscoverHandler",   # stub
+        ("fulltext", True): "FulltextHandler",
+        ("summarize", True): "SummarizeHandler",
+        ("extract", True): "ExtractHandler",
+        ("extract", False): "ExtractHandler",
+        ("discover", True): "DiscoverHandler",
+        ("discover", False): "DiscoverHandler",
     }
 
     def route(self, intent: str, resolved: bool) -> BaseHandler:
@@ -87,11 +89,17 @@ class ActionRouter:
         if handler_name == "FulltextHandler":
             return FulltextHandler()
 
-        # SummarizeHandler, ExtractHandler, DiscoverHandler — P0 stub
-        # 추후 각 핸들러 구현 시 아래 패턴으로 추가
-        # if handler_name == "SummarizeHandler":
-        #     from src.convention_qa.action_routing.summarize_handler import SummarizeHandler
-        #     return SummarizeHandler()
+        if handler_name == "SummarizeHandler":
+            from src.convention_qa.action_routing.summarize_handler import SummarizeHandler  # noqa: PLC0415
+            return SummarizeHandler()
+
+        if handler_name == "ExtractHandler":
+            from src.convention_qa.action_routing.extract_handler import ExtractHandler  # noqa: PLC0415
+            return ExtractHandler()
+
+        if handler_name == "DiscoverHandler":
+            from src.convention_qa.action_routing.discover_handler import DiscoverHandler  # noqa: PLC0415
+            return DiscoverHandler()
 
         return ClarifyHandler()
 

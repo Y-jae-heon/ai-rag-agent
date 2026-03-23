@@ -71,14 +71,14 @@ def exact_match(
 def alias_match(
     document_query: str,
     documents: list[dict],
-    alias_registry: dict[str, list[str]],
+    alias_registry: dict[str, dict | list],
 ) -> DocumentCandidate | None:
     """document_query가 alias_registry의 aliases 중 하나와 일치하는지 확인.
 
     Args:
         document_query: 사용자가 요청한 문서 쿼리 문자열.
         documents: document_index 메타데이터 목록.
-        alias_registry: {canonical_doc_id: [alias, ...]} 형태의 딕셔너리.
+        alias_registry: {canonical_doc_id: {aliases, ...}} 또는 구형 {id: [alias, ...]} 형태.
 
     Returns:
         일치하는 DocumentCandidate 또는 None.
@@ -92,7 +92,8 @@ def alias_match(
         if doc_id:
             doc_map[doc_id] = doc
 
-    for canonical_doc_id, aliases in alias_registry.items():
+    for canonical_doc_id, entry in alias_registry.items():
+        aliases = entry if isinstance(entry, list) else entry.get("aliases", [])
         for alias in aliases:
             normalized_alias = normalize_text(alias)
             if normalized_query == normalized_alias or normalized_query in normalized_alias or normalized_alias in normalized_query:
