@@ -60,6 +60,21 @@ SKIP_INDEX_CHECK=true uvicorn src.api.main:app --reload
 
 기본 포트: `http://localhost:8000`
 
+### Gradio Chat UI 실행 (선택)
+
+RAG 서버와 별도 프로세스로 웹 채팅 UI를 구동할 수 있다.
+
+```bash
+# 터미널 1: RAG 서버 기동
+uvicorn src.api.main:app --port 8000
+
+# 터미널 2: Gradio UI 기동
+python chat_ui/app.py
+# → http://localhost:7860
+```
+
+UI에서 Domain / Stack 드롭다운으로 필터를 지정한 뒤 질문하면 해당 필터가 API 호출에 반영된다.
+
 ---
 
 ## API 사용법
@@ -309,10 +324,14 @@ developer-chat-bot-v3/
 │   │   └── response/              # 응답 포맷터
 │   └── api/                 # FastAPI 레이어
 │       └── routes/
+├── chat_ui/                 # Gradio 웹 채팅 UI (별도 프로세스)
+│   ├── app.py               # Gradio Blocks 앱 진입점 (localhost:7860)
+│   ├── rag_client.py        # RAG 서버 HTTP 클라이언트
+│   └── config.py            # RAG_SERVER_URL 환경변수 로딩
 ├── scripts/
 │   └── ingest.py            # 인덱스 빌드 CLI
 ├── tests/                   # 단위 테스트
 ├── .chroma/                 # ChromaDB 영속 스토리지 (gitignore)
 ├── requirements.txt
-└── .env                     # OPENAI_API_KEY
+└── .env                     # OPENAI_API_KEY, RAG_SERVER_URL
 ```
