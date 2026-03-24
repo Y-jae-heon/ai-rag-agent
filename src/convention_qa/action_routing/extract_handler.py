@@ -78,19 +78,30 @@ class ExtractHandler(BaseHandler):
                 persist_directory=collection_dir,
                 embedding_function=embeddings,
             )
+            print(f"[ChromaDB] max_marginal_relevance_search() 호출 — canonical_doc_id={canonical_doc_id}, k=4, fetch_k=20, question={question!r}")
             docs = vectorstore.max_marginal_relevance_search(
                 question,
                 k=4,
                 fetch_k=20,
                 filter={"canonical_doc_id": canonical_doc_id},
             )
-            return [
+            print(f"[ChromaDB] max_marginal_relevance_search() 완료 — 청크 수={len(docs)}")
+            chunks = [
                 {
                     "content": doc.page_content,
                     "heading": doc.metadata.get("section_heading", ""),
                 }
                 for doc in docs
             ]
+            logger.info(
+                "[ExtractHandler._mmr_search] canonical_doc_id=%s | 질문=%r | 청크 %d건 반환",
+                canonical_doc_id,
+                question,
+                len(chunks),
+            )
+            for i, chunk in enumerate(chunks):
+                logger.info("  [%d] heading=%r  content_len=%d", i + 1, chunk["heading"], len(chunk["content"]))
+            return chunks
         except Exception as e:
             logger.warning("chunk_index MMR 검색 실패 (graceful 처리): %s", e)
             return []

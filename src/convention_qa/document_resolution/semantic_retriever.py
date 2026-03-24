@@ -29,6 +29,8 @@ def semantic_search(
     Returns:
         DocumentCandidate 목록 (score 내림차순). 컬렉션이 없거나 오류 시 빈 리스트.
     """
+
+    print("\nSEMANTIC SEARCH START")
     try:
         from langchain_chroma import Chroma
         from langchain_openai import OpenAIEmbeddings
@@ -67,14 +69,16 @@ def semantic_search(
         where_filter = {"$and": conditions}
 
     try:
+        print(f"[ChromaDB] similarity_search_with_score() 호출 — query={document_query!r}, k={k}, filter={where_filter}")
         if where_filter:
             results = vectorstore.similarity_search_with_score(
                 document_query, k=k, filter=where_filter
             )
         else:
             results = vectorstore.similarity_search_with_score(document_query, k=k)
+        print(f"[ChromaDB] similarity_search_with_score() 완료 — 결과 수={len(results)}")
     except Exception as e:
-        logger.warning("semantic search 실행 중 오류 (graceful 처리): %s", e)
+        logger.info("semantic search 실행 중 오류 (graceful 처리): %s", e)
         return []
 
     candidates: list[DocumentCandidate] = []
@@ -83,6 +87,12 @@ def semantic_search(
         confidence = 1.0 / (1.0 + distance)
 
         if confidence < threshold:
+            logger.debug(
+                "[semantic_search] 임계값 미달 제외 — title=%s, confidence=%.4f (threshold=%.2f)",
+                (doc.metadata or {}).get("title", ""),
+                confidence,
+                threshold,
+            )
             continue
 
         metadata = doc.metadata or {}
@@ -99,4 +109,23 @@ def semantic_search(
 
     # score 내림차순 정렬
     candidates.sort(key=lambda c: c.score, reverse=True)
+
+    logger.info(
+        "[semantic_search] query=%r | 필터=(domain=%s, stack=%s) | 결과 %d건",
+        document_query,
+        domain,
+        stack,
+        len(candidates),
+    )
+    for i, c in enumerate(candidates):
+        logger.info(
+            "  [%d] title=%r  canonical_doc_id=%s  score=%.4f  domain=%s  stack=%s",
+            i + 1,
+            c.title,
+            c.canonical_doc_id,
+            c.score,
+            c.domain,
+            c.stack,
+        )
+
     return candidates

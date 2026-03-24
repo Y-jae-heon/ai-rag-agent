@@ -5,11 +5,18 @@ health 및 query 라우터를 등록한다.
 SKIP_INDEX_CHECK=true 환경변수로 인덱스 확인을 건너뛸 수 있다 (개발/테스트 용도).
 """
 
+import logging
 import os
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from fastapi import FastAPI
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
+    datefmt="%H:%M:%S",
+)
 
 from src.api.dependencies import get_chroma_client
 from src.api.routes import health, query

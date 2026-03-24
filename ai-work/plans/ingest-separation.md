@@ -15,12 +15,12 @@ ChromaDB 인덱스 빌드(ingest)는 서버 기동과 분리되어야 한다.
 
 ## 실행 모델
 
-| 구분 | 명령 | 시점 |
-|------|------|------|
-| 인덱스 최초 빌드 | `python scripts/ingest.py` | 프로젝트 최초 구성 시 |
-| 인덱스 전체 재빌드 | `python scripts/ingest.py --rebuild` | docs/ 파일 대거 변경 시 |
-| 특정 컬렉션 재빌드 | `python scripts/ingest.py --collections document_index` | 부분 업데이트 시 |
-| 서버 기동 | `uvicorn src.api.main:app` | 인덱스 빌드 완료 후에만 실행 |
+| 구분               | 명령                                                    | 시점                         |
+| ------------------ | ------------------------------------------------------- | ---------------------------- |
+| 인덱스 최초 빌드   | `python scripts/ingest.py`                              | 프로젝트 최초 구성 시        |
+| 인덱스 전체 재빌드 | `python scripts/ingest.py --rebuild`                    | docs/ 파일 대거 변경 시      |
+| 특정 컬렉션 재빌드 | `python scripts/ingest.py --collections document_index` | 부분 업데이트 시             |
+| 서버 기동          | `uvicorn src.api.main:app`                              | 인덱스 빌드 완료 후에만 실행 |
 
 **핵심 원칙**: 서버 기동 시 인덱싱 코드를 절대 호출하지 않는다.
 
@@ -148,9 +148,9 @@ SIMILARITY_THRESHOLD = 0.75
 
 ## 검증 시나리오
 
-| 시나리오 | 명령 | 기대 결과 |
-|----------|------|-----------|
-| 인덱스 없이 서버 기동 | `uvicorn src.api.main:app` | RuntimeError + "Run: python scripts/ingest.py" 출력 후 종료 |
-| 인덱스 빌드 후 서버 기동 | `python scripts/ingest.py && uvicorn src.api.main:app` | 정상 기동 |
-| 전체 재빌드 | `python scripts/ingest.py --rebuild` | .chroma/ 삭제 후 재생성 |
-| 특정 컬렉션 재빌드 | `python scripts/ingest.py --collections document_index` | document_index만 갱신 |
+| 시나리오                 | 명령                                                    | 기대 결과                                                   |
+| ------------------------ | ------------------------------------------------------- | ----------------------------------------------------------- |
+| 인덱스 없이 서버 기동    | `uvicorn src.api.main:app`                              | RuntimeError + "Run: python scripts/ingest.py" 출력 후 종료 |
+| 인덱스 빌드 후 서버 기동 | `python scripts/ingest.py && uvicorn src.api.main:app`  | 정상 기동                                                   |
+| 전체 재빌드              | `python scripts/ingest.py --rebuild`                    | .chroma/ 삭제 후 재생성                                     |
+| 특정 컬렉션 재빌드       | `python scripts/ingest.py --collections document_index` | document_index만 갱신                                       |

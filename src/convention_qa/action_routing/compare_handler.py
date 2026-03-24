@@ -40,6 +40,9 @@ class CompareHandler(BaseHandler):
         resolution_a = self._resolve(query_a, understanding)
         resolution_b = self._resolve(query_b, understanding)
 
+        print(f"resolution_a = {resolution_a}")
+        print(f"resolution_b = {resolution_b}")
+
         title_a = (resolution_a.title or query_a) if resolution_a else query_a
         title_b = (resolution_b.title or query_b) if resolution_b else query_b
         path_a = (resolution_a.path or "") if resolution_a else ""
@@ -60,6 +63,7 @@ class CompareHandler(BaseHandler):
             sections_b=sections_text_b,
             question=context.question,
         )
+
 
         answer = format_compare(title_a, title_b, comparison_text, path_a, path_b)
 
@@ -105,6 +109,7 @@ class CompareHandler(BaseHandler):
                 persist_directory=collection_dir,
                 embedding_function=embeddings,
             )
+            print(f"[ChromaDB] vectorstore.get() 호출 — collection=section_index, canonical_doc_id={canonical_doc_id}")
             result = vectorstore.get(where={"canonical_doc_id": canonical_doc_id})
 
             sections: list[dict] = []
@@ -115,6 +120,15 @@ class CompareHandler(BaseHandler):
                 heading = metadata.get("section_heading", "")
                 content = doc_text.replace(heading, "", 1).strip() if heading else doc_text
                 sections.append({"heading": heading, "content": content})
+
+            print(f"[ChromaDB] vectorstore.get() 완료 — 섹션 수={len(sections)}")
+            logger.info(
+                "[CompareHandler._get_sections] canonical_doc_id=%s | 섹션 %d건 반환",
+                canonical_doc_id,
+                len(sections),
+            )
+            for i, s in enumerate(sections):
+                logger.info("  [%d] heading=%r  content_len=%d", i + 1, s["heading"], len(s["content"]))
             return sections
         except Exception as e:
             logger.warning("section_index 조회 실패 (graceful 처리): %s", e)

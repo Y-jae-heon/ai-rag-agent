@@ -85,9 +85,20 @@ class DiscoverHandler(BaseHandler):
                 persist_directory=collection_dir,
                 embedding_function=embeddings,
             )
+            print(f"[ChromaDB] vectorstore.get() 호출 — collection=section_index, canonical_doc_id={canonical_doc_id}")
             result = vectorstore.get(where={"canonical_doc_id": canonical_doc_id})
             metadatas = result.get("metadatas") or []
-            return [m.get("section_heading", "") for m in metadatas if m.get("section_heading")]
+            headings = [m.get("section_heading", "") for m in metadatas if m.get("section_heading")]
+            print(f"[ChromaDB] vectorstore.get() 완료 — 헤딩 수={len(headings)}")
+
+            logger.info(
+                "[DiscoverHandler._get_section_headings] canonical_doc_id=%s | 헤딩 %d건 반환",
+                canonical_doc_id,
+                len(headings),
+            )
+            for i, h in enumerate(headings):
+                logger.info("  [%d] heading=%r", i + 1, h)
+            return headings
         except Exception as e:
             logger.warning("section_index 섹션 헤딩 조회 실패 (graceful 처리): %s", e)
             return []

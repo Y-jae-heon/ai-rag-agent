@@ -47,7 +47,7 @@ class QueryResponse(BaseModel):
     """
 
     answer: str
-    answer_type: Literal["fulltext", "summary", "extract", "discover", "clarify"]
+    answer_type: Literal["fulltext", "summary", "extract", "discover", "clarify", "not_found", "compare"]
     intent: str
     resolved_document: ResolvedDocumentInfo | None = None
     sources: list[dict] = []

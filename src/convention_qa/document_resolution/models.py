@@ -20,5 +20,5 @@ class DocumentResolutionResult(BaseModel):
     path: str | None = None
     title: str | None = None
     confidence: float = 0.0
-    resolution_strategy: Literal["exact", "alias", "semantic", "unresolved"]
+    resolution_strategy: Literal["exact", "alias", "semantic", "keyword_tiebreak", "unresolved"]
     candidates: list[DocumentCandidate] = []

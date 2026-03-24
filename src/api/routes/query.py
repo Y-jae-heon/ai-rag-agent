@@ -45,7 +45,7 @@ def _build_response(
         )
 
     # answer_type이 QueryResponse의 Literal에 포함되지 않는 값이면 "clarify"로 fallback
-    valid_answer_types = {"fulltext", "summary", "extract", "discover", "clarify"}
+    valid_answer_types = {"fulltext", "summary", "extract", "discover", "clarify", "not_found", "compare"}
     answer_type = handler_result.answer_type if handler_result.answer_type in valid_answer_types else "clarify"
 
     return QueryResponse(
@@ -96,7 +96,12 @@ async def query(
             understanding.document_query,
             understanding.domain,
             understanding.stack,
+            topic=understanding.topic,
+            raw_question=understanding.raw_question,
         )
+        print(f"\nquestion = {request.question}")
+        print(f"\nunderstanding = {understanding}")
+        print(f"\nresolution = {resolution}")
 
         # Step 3: Action routing + handler 실행
         handler_result: HandlerResult = action_router.route_and_execute(
@@ -104,6 +109,8 @@ async def query(
             resolution,
             request.question,
         )
+
+        print(f"\nhandler_result = {handler_result}")
 
         # Step 4: HandlerResult → QueryResponse 변환
         return _build_response(handler_result, understanding.intent)

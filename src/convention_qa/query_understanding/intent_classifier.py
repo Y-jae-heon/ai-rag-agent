@@ -77,12 +77,12 @@ class IntentClassifier:
             }
         )
 
-        # alias_normalizer 결과가 있으면 LLM 결과를 보강한다
-        # (LLM이 이미 잘 추출한 경우에는 덮어쓰지 않고 병합)
-        if pre_domain is not None and result.domain is None:
+        # alias_normalizer 결과가 있으면 항상 정규화된 값으로 override한다
+        # (LLM이 비정규화 값(예: "Java")을 반환해도 alias_normalizer의 정규화 값("spring")으로 덮어씀)
+        if pre_domain is not None:
             result = result.model_copy(update={"domain": pre_domain})
 
-        if pre_stack is not None and result.stack is None:
+        if pre_stack is not None:
             result = result.model_copy(update={"stack": pre_stack})
 
         # raw_question은 항상 원본 질문으로 보장

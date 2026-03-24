@@ -36,7 +36,17 @@ _BACKEND_ALIASES: list[str] = [
 # Stack alias mapping
 # ---------------------------------------------------------------------------
 
+# NOTE: normalize_stack()은 first-match-wins 방식이다.
+# "kotlin"이 "spring"보다 먼저 와야 한다.
+# "Kotlin(Spring)으로 개발" 입력 시 "Kotlin" alias가 먼저 매칭되어 "kotlin"을 반환한다.
+# 이 순서를 변경하면 test_kotlin_spring_maps_to_kotlin 이 실패한다.
 _STACK_ALIASES: dict[str, list[str]] = {
+    "kotlin": [
+        "코틀린",
+        "Kotlin",
+        "kotlin",
+        # "Kotlin(Spring)", "kotlin(spring)" 는 \b가 ) 뒤에서 미성립하여 영구 미매칭 → 제거 (P3-BUG-06)
+    ],
     "spring": [
         "스프링",
         "Spring",
@@ -44,15 +54,7 @@ _STACK_ALIASES: dict[str, list[str]] = {
         "자바",
         "Java",
         "java",
-        "Java(Spring)",
-        "java(spring)",
-    ],
-    "kotlin": [
-        "코틀린",
-        "Kotlin",
-        "kotlin",
-        "Kotlin(Spring)",
-        "kotlin(spring)",
+        # "Java(Spring)", "java(spring)" 는 \b가 ) 뒤에서 미성립하여 영구 미매칭 → 제거 (P3-BUG-06)
     ],
     "nestjs": [
         "NestJS",
@@ -62,8 +64,7 @@ _STACK_ALIASES: dict[str, list[str]] = {
         "네스트",
         "네스트JS",
         "네스트js",
-        "Typescript(NestJS)",
-        "typescript(nestjs)",
+        # "Typescript(NestJS)", "typescript(nestjs)" 는 \b가 ) 뒤에서 미성립하여 영구 미매칭 → 제거 (P3-BUG-06)
     ],
     "react": [
         "React",
@@ -129,11 +130,18 @@ def _matches_alias(text: str, alias: str) -> bool:
 
     Returns:
         alias가 텍스트에 포함되어 있으면 True.
+
+    Note:
+        ASCII alias 매칭에 re.ASCII 플래그를 사용한다.
+        기본 유니코드 모드에서는 한국어 글자도 \\w로 분류되어
+        "Java에서" 같은 입력에서 'a'와 '에' 사이에 \\b가 성립하지 않는 문제가 있다.
+        re.ASCII 적용 시 \\w = [a-zA-Z0-9_]로 제한되어 '에'가 \\W로 분류되고
+        단어 경계가 올바르게 동작한다. (P1-BUG-02 참조)
     """
     if alias.isascii():
         # 영문/숫자 alias는 단어 경계 매칭 (대소문자 구분)
         pattern = r"\b" + re.escape(alias) + r"\b"
-        return bool(re.search(pattern, text))
+        return bool(re.search(pattern, text, re.ASCII))
     else:
         # 한국어 등 비ASCII alias는 단순 포함 검사
         return alias in text
