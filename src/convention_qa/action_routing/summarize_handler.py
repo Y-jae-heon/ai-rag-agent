@@ -85,7 +85,6 @@ class SummarizeHandler(BaseHandler):
                 persist_directory=collection_dir,
                 embedding_function=embeddings,
             )
-            print(f"[ChromaDB] vectorstore.get() 호출 — collection=section_index, canonical_doc_id={canonical_doc_id}")
             result = vectorstore.get(where={"canonical_doc_id": canonical_doc_id})
 
             sections: list[dict] = []
@@ -97,7 +96,6 @@ class SummarizeHandler(BaseHandler):
                 content = doc_text.replace(heading, "", 1).strip() if heading else doc_text
                 sections.append({"heading": heading, "content": content})
 
-            print(f"[ChromaDB] vectorstore.get() 완료 — 섹션 수={len(sections)}")
             logger.info(
                 "[SummarizeHandler._get_sections] canonical_doc_id=%s | 섹션 %d건 반환",
                 canonical_doc_id,
