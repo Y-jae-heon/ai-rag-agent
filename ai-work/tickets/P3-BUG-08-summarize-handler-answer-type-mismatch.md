@@ -46,8 +46,13 @@ P3-BUG-04(not_found silent 변환)와 동일한 패턴의 잔존 결함이다.
 - `src/api/models.py:50` (Option B 선택 시)
 - `tests/test_summarize_handler.py` (Option A 선택 시)
 
+## 수정 내역 (Option A 적용)
+
+- `src/convention_qa/action_routing/summarize_handler.py:59`: `answer_type="summary"` (이미 수정 완료 상태)
+- `tests/test_summarize_handler.py`: 기댓값 `"summarize"` → `"summary"` 4곳 수정
+
 ## 완료 기준
 
-- [ ] `SummarizeHandler` 반환 `answer_type`과 `valid_answer_types`가 일치
-- [ ] 정상 요약 요청 응답의 `answer_type`이 `"clarify"`로 변환되지 않음
-- [ ] 관련 테스트 통과
+- [x] `SummarizeHandler` 반환 `answer_type`과 `valid_answer_types`가 일치
+- [x] 정상 요약 요청 응답의 `answer_type`이 `"clarify"`로 변환되지 않음
+- [x] 관련 테스트 통과 (6/6 passed)

@@ -48,7 +48,7 @@ class TestHandleWithSections:
         mock_get_sections.assert_called_once_with("test_doc_id")
         mock_summarize.assert_called_once()
 
-        assert result.answer_type == "summarize"
+        assert result.answer_type == "summary"
         assert "테스트 문서" in result.answer
         assert "요약" in result.answer
         assert result.sources == [{"path": "docs/test.md", "title": "테스트 문서"}]
@@ -105,10 +105,10 @@ class TestHandleEmptySections:
             result = handler.handle(context)
 
         assert captured_args["sections_text"] == "(섹션 데이터 없음)"
-        assert result.answer_type == "summarize"
+        assert result.answer_type == "summary"
 
     def test_handle_empty_sections_still_returns_summarize_type(self, handler, resolved_resolution):
-        """빈 섹션이어도 answer_type은 'summarize'여야 한다."""
+        """빈 섹션이어도 answer_type은 'summary'여야 한다."""
         with patch.object(handler, "_get_sections", return_value=[]), \
              patch.object(handler, "_summarize", return_value="요약 텍스트"):
 
@@ -119,7 +119,7 @@ class TestHandleEmptySections:
             )
             result = handler.handle(context)
 
-        assert result.answer_type == "summarize"
+        assert result.answer_type == "summary"
         assert result.answer is not None
 
 
@@ -151,7 +151,7 @@ class TestHandleNoCanonicalDocId:
             result = handler.handle(context)
 
         assert captured_args["sections_text"] == "(섹션 데이터 없음)"
-        assert result.answer_type == "summarize"
+        assert result.answer_type == "summary"
 
     def test_handle_empty_canonical_doc_id_string(self, handler):
         """canonical_doc_id가 빈 문자열이면 _get_sections가 빈 리스트를 반환해야 한다."""

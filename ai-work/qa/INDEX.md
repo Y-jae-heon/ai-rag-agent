@@ -7,3 +7,4 @@
 | 2026-03-24 | P3-BUG-06: alias_normalizer 도달 불가 alias 및 Kotlin(Spring) 의미 오류 | [qa-report-P3-BUG-06-alias-normalizer-unreachable-aliases-2026-03-24.md](./qa-report-P3-BUG-06-alias-normalizer-unreachable-aliases-2026-03-24.md) | CONDITIONAL PASS |
 | 2026-03-24 | P2-BUG-03: HandlerContext.understanding 주석 해제 (compare intent 복구) | [qa-report-P2-BUG-03-router-understanding-2026-03-24.md](./qa-report-P2-BUG-03-router-understanding-2026-03-24.md) | CONDITIONAL PASS |
 | 2026-03-24 | P3-BUG-04: answer_type "not_found" silent 변환 → clarify 오분류 수정 | [qa-report-P3-BUG-04-not-found-answer-type-2026-03-24.md](./qa-report-P3-BUG-04-not-found-answer-type-2026-03-24.md) | CONDITIONAL PASS |
+| 2026-03-24 | P3-BUG-08: SummarizeHandler answer_type "summarize" → "summary" 수정 | [qa-report-P3-BUG-08-summarize-handler-answer-type-2026-03-24.md](./qa-report-P3-BUG-08-summarize-handler-answer-type-2026-03-24.md) | PASS |
