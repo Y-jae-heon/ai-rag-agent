@@ -5,9 +5,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import gradio as gr
 from chat_ui import rag_client
 
-DOMAIN_CHOICES = ["auto", "frontend", "backend"]
-STACK_CHOICES = ["auto", "react", "spring", "nestjs", "kotlin"]
-
 WELCOME_MESSAGE = {
     "role": "assistant",
     "content": "안녕하세요! 개발 컨벤션 Q&A Bot입니다. 궁금한 점을 질문해주세요.",
@@ -35,17 +32,27 @@ def _format_bot_message(result: dict) -> str:
     return answer
 
 
-def send_message(message: str, history: list, domain: str, stack: str):
+def _format_debug(result: dict) -> str:
+    debug = result.get("debug")
+    if not debug:
+        return ""
+    import json
+
+    return json.dumps(debug, ensure_ascii=False, indent=2)
+
+
+def send_message(message: str, history: list, debug_enabled: bool):
     if not message.strip():
-        return history, ""
+        return history, "", ""
 
     history = history + [{"role": "user", "content": message}]
 
-    result = rag_client.query(message, domain, stack)
+    result = rag_client.query(message, debug_enabled)
     bot_content = _format_bot_message(result)
+    debug_content = _format_debug(result)
 
     history = history + [{"role": "assistant", "content": bot_content}]
-    return history, ""
+    return history, "", debug_content
 
 
 def clear_history():
@@ -54,22 +61,21 @@ def clear_history():
 
 with gr.Blocks(title="Developer Convention Q&A Bot") as demo:
     with gr.Row():
-        with gr.Column(scale=1, min_width=180):
+        with gr.Column(scale=1, min_width=220):
             gr.Markdown("## Settings")
-            domain_dropdown = gr.Dropdown(
-                choices=DOMAIN_CHOICES,
-                value="auto",
-                label="Domain",
-            )
-            stack_dropdown = gr.Dropdown(
-                choices=STACK_CHOICES,
-                value="auto",
-                label="Stack",
+            debug_checkbox = gr.Checkbox(
+                value=False,
+                label="Debug 출력 포함",
             )
             clear_btn = gr.Button("초기화", variant="secondary")
+            debug_output = gr.Code(
+                label="Latest Debug",
+                language="json",
+                interactive=False,
+            )
 
         with gr.Column(scale=4):
-            gr.Markdown("## Developer Convention Q&A Bot")
+            gr.Markdown("## Developer Convention Q&A Bot v4")
             chatbot = gr.Chatbot(
                 value=[WELCOME_MESSAGE],
                 height=500,
@@ -85,13 +91,13 @@ with gr.Blocks(title="Developer Convention Q&A Bot") as demo:
 
     send_btn.click(
         fn=send_message,
-        inputs=[msg_input, chatbot, domain_dropdown, stack_dropdown],
-        outputs=[chatbot, msg_input],
+        inputs=[msg_input, chatbot, debug_checkbox],
+        outputs=[chatbot, msg_input, debug_output],
     )
     msg_input.submit(
         fn=send_message,
-        inputs=[msg_input, chatbot, domain_dropdown, stack_dropdown],
-        outputs=[chatbot, msg_input],
+        inputs=[msg_input, chatbot, debug_checkbox],
+        outputs=[chatbot, msg_input, debug_output],
     )
     clear_btn.click(fn=clear_history, outputs=[chatbot])
 

@@ -1,337 +1,290 @@
 # developer-chat-bot-v3
 
-개발 컨벤션 문서(FE/BE)에 대해 자연어로 질문하면 의도에 맞는 답변을 반환하는 QA API 서버.
+사내 개발 컨벤션 문서를 대상으로 동작하는 RAG 프로젝트다. 현재 기본 실행 경로는 v4 greenfield 파이프라인 기준이다.
 
-## 개요
+## 현재 기준
 
-v3는 단순한 chunk 검색이 아닌 **intent 기반 실행 시스템**이다. 사용자의 질문 의도를 5가지로 분류하고, 각 의도에 최적화된 방식으로 문서를 찾아 응답을 생성한다.
+- 서버 엔트리포인트: `src.api.main:app`
+- 질의 API: `POST /api/v4/query`
+- 인덱스 빌드 스크립트: `python scripts/ingest_v4.py`
+- 벤치마크 스크립트: `python scripts/benchmark_v4.py`
+- Gradio UI: `python chat_ui/app.py`
 
-| Intent | 설명 | 예시 질문 |
-|--------|------|-----------|
-| `fulltext` | 문서 원문 그대로 반환 (LLM 없음) | "파일 네이밍 컨벤션 전문 보여줘" |
-| `summarize` | 문서 내용 요약 (LLM) | "파일 네이밍 컨벤션 내용 알려줘" |
-| `extract` | 특정 규칙/정보 추출 (LLM + MMR) | "테스트 파일 네이밍 규칙 알려줘" |
-| `discover` | 문서 존재 여부 및 구조 확인 (LLM 없음) | "파일 네이밍 컨벤션 문서 있어?" |
-| `compare` | 두 문서/스택 규칙 비교 (LLM) | "Java Spring vs Kotlin Spring 네이밍 차이점" |
+참고:
 
----
+- 저장소 안에 v3 코드도 남아 있지만, 현재 FastAPI 기본 엔트리포인트는 v4를 바라본다.
+- v4 계획 문서는 [ai-docs/rag-v4-greenfield-plan.md](/Users/yeomjaeheon/Documents/dev/ai-tf/developer-chat-bot-v3/ai-docs/rag-v4-greenfield-plan.md)에 있다.
 
-## 빠른 시작
-
-### 사전 요구사항
+## 사전 요구사항
 
 - Python 3.11+
 - OpenAI API Key
+- 인터넷 연결
 
-### 설치
+선택:
+
+- LangSmith trace를 보려면 `LANGCHAIN_API_KEY`, `LANGCHAIN_PROJECT` 설정
+
+## 설치
 
 ```bash
-# 의존성 설치
 pip install -r requirements.txt
-
-# 환경 변수 설정
-cp .env.example .env
-# .env 파일에 OPENAI_API_KEY=sk-... 입력
 ```
 
-### 인덱스 빌드 (최초 1회 필요)
+`.env` 예시:
 
 ```bash
-# 전체 인덱스 빌드 (document_index / section_index / chunk_index)
-python scripts/ingest.py
-
-# 특정 컬렉션만 재빌드
-python scripts/ingest.py --collections document_index
-python scripts/ingest.py --collections section_index chunk_index
-
-# 전체 강제 재빌드
-python scripts/ingest.py --rebuild
+OPENAI_API_KEY=sk-...
+RAG_SERVER_URL=http://localhost:8000
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_PROJECT=developer-chat-bot-v4
+LANGCHAIN_API_KEY=...
 ```
 
-### 서버 실행
+## 실행 순서
+
+### 1. v4 인덱스 빌드
+
+최초 1회는 전체 인덱스를 빌드해야 한다.
 
 ```bash
-# 프로덕션 모드 (인덱스 빌드 완료 후)
+python scripts/ingest_v4.py --rebuild
+```
+
+특정 인덱스만 다시 만들 때:
+
+```bash
+python scripts/ingest_v4.py --collections document_dense
+python scripts/ingest_v4.py --collections section_dense
+python scripts/ingest_v4.py --collections section_sparse
+```
+
+빌드 결과는 `.chroma_v4/` 아래에 저장된다.
+
+생성 항목:
+
+- `.chroma_v4/document_dense/`
+- `.chroma_v4/section_dense/`
+- `.chroma_v4/section_sparse/index.json`
+- `.chroma_v4/ingest_manifest.json`
+
+### 2. API 서버 실행
+
+```bash
 uvicorn src.api.main:app --reload
+```
 
-# 개발 모드 (인덱스 없이 실행)
+기본 주소:
+
+- `http://localhost:8000`
+
+인덱스 체크를 잠시 건너뛰고 서버만 띄우고 싶을 때:
+
+```bash
 SKIP_INDEX_CHECK=true uvicorn src.api.main:app --reload
 ```
 
-기본 포트: `http://localhost:8000`
+### 3. Gradio UI 실행
 
-### Gradio Chat UI 실행 (선택)
-
-RAG 서버와 별도 프로세스로 웹 채팅 UI를 구동할 수 있다.
+별도 터미널에서 실행한다.
 
 ```bash
-# 터미널 1: RAG 서버 기동
-uvicorn src.api.main:app --port 8000
-
-# 터미널 2: Gradio UI 기동
 python chat_ui/app.py
-# → http://localhost:7860
 ```
 
-UI에서 Domain / Stack 드롭다운으로 필터를 지정한 뒤 질문하면 해당 필터가 API 호출에 반영된다.
+기본 주소:
 
----
+- `http://localhost:7860`
+
+현재 UI는 다음만 제공한다.
+
+- 질문 입력
+- 답변 확인
+- debug 출력 보기
+
+domain/framework dropdown은 제거되어 있다.
+
+### 4. 벤치마크 실행
+
+v4 retrieval benchmark는 아래 스크립트로 실행한다.
+
+```bash
+python scripts/benchmark_v4.py
+```
+
+기본 benchmark 케이스 파일:
+
+- `ai-work/benchmarks/rag_v4_queries.json`
 
 ## API 사용법
 
-### POST /api/v1/query
+### POST /api/v4/query
 
-사용자의 자연어 질문을 처리하고 답변을 반환한다.
+질문을 보내면 answer, citation, top document를 반환한다.
 
-**요청**
+요청 예시:
 
 ```json
 {
-  "question": "파일 네이밍 컨벤션 전문 보여줘",
-  "domain": "frontend",
-  "stack": null,
-  "intent_hint": null
+  "question": "FSD 구조 규칙 알려줘",
+  "debug": true
 }
 ```
+
+요청 필드:
 
 | 필드 | 타입 | 필수 | 설명 |
 |------|------|------|------|
 | `question` | string | 필수 | 자연어 질문 |
-| `domain` | `"frontend"` \| `"backend"` \| null | 선택 | 도메인 힌트 (없으면 자동 감지) |
-| `stack` | string \| null | 선택 | 기술 스택 힌트 (예: `"react"`, `"spring"`, `"nestjs"`) |
-| `intent_hint` | string \| null | 선택 | 클라이언트가 제공하는 intent 힌트 |
+| `debug` | boolean | 선택 | retrieval/debug payload 포함 여부 |
 
-**응답**
+응답 예시:
 
 ```json
 {
-  "answer": "## 파일 네이밍 컨벤션\n> 경로: docs/fe_chunk_docs/...\n\n---\n\n# 파일 네이밍 컨벤션\n...",
-  "answer_type": "fulltext",
-  "intent": "fulltext",
-  "resolved_document": {
-    "canonical_doc_id": "325e63c6fa9780149d90e16c61f7f0e2",
-    "title": "파일 네이밍 컨벤션",
-    "path": "docs/fe_chunk_docs/파일 네이밍 컨벤션 325e63c6fa9780149d90e16c61f7f0e2.md"
-  },
-  "sources": [
+  "answer": "FSD 구조는 ...",
+  "citations": [
     {
-      "title": "파일 네이밍 컨벤션",
-      "path": "docs/fe_chunk_docs/...",
-      "domain": "frontend"
+      "title": "FSD 레이어드 아키텍처 개요",
+      "source_path": "docs/fe_chunk_docs/FSD 레이어드 아키텍처 개요 325e63c6fa978067a124e0c68833a066.md",
+      "section_id": "325e63...::section::1",
+      "section_type": "rule",
+      "excerpt": "프론트엔드 아키텍처는 Feature-Sliced Design ..."
     }
-  ]
+  ],
+  "top_documents": [
+    {
+      "doc_id": "325e63c6fa978067a124e0c68833a066",
+      "title": "FSD 레이어드 아키텍처 개요",
+      "source_path": "docs/fe_chunk_docs/FSD 레이어드 아키텍처 개요 325e63c6fa978067a124e0c68833a066.md",
+      "score": 0.031,
+      "matched_by": ["section_dense", "section_sparse"]
+    }
+  ],
+  "confidence": 0.031,
+  "needs_clarification": false,
+  "trace_id": "..."
 }
 ```
 
+응답 필드:
+
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `answer` | string | 마크다운 형식의 답변 텍스트 |
-| `answer_type` | `"fulltext"` \| `"summary"` \| `"extract"` \| `"discover"` \| `"clarify"` | 응답 유형 |
-| `intent` | string | 분류된 사용자 의도 |
-| `resolved_document` | object \| null | 특정된 문서 정보 |
-| `sources` | array | 참조 문서 목록 |
+| `answer` | string | 최종 답변 |
+| `citations` | array | 답변 근거 섹션 목록 |
+| `top_documents` | array | fusion 이후 상위 문서 후보 |
+| `confidence` | float | 상위 문서 점수 |
+| `needs_clarification` | boolean | 근거 부족 여부 |
+| `trace_id` | string \| null | LangSmith trace id |
+| `debug` | object \| null | debug=true일 때 retrieval 상세 |
 
 ### GET /health
 
-서버 및 인덱스 상태를 확인한다.
+v4 인덱스 상태를 반환한다.
+
+응답 예시:
 
 ```json
 {
   "status": "ok",
-  "index_exists": true,
-  "ingest_manifest": { ... }
+  "indices": ["document_dense", "section_dense", "section_sparse"],
+  "manifest": {
+    "built_at": "...",
+    "document_count": 54,
+    "section_count": 521,
+    "collections": {
+      "document_dense": 54,
+      "section_dense": 521,
+      "section_sparse": 521
+    }
+  },
+  "version": "v4"
 }
 ```
 
-인덱스가 없으면 `status: "degraded"`를 반환한다.
-
----
-
-## 요청 예시 모음
-
-### curl
+## curl 예시
 
 ```bash
-# 문서 원문 조회
-curl -X POST http://localhost:8000/api/v1/query \
+curl -X POST http://localhost:8000/api/v4/query \
   -H "Content-Type: application/json" \
-  -d '{"question": "파일 네이밍 컨벤션 전문 보여줘"}'
+  -d '{"question": "FSD 구조 규칙 알려줘"}'
+```
 
-# 백엔드 Java Spring 요약
-curl -X POST http://localhost:8000/api/v1/query \
+```bash
+curl -X POST http://localhost:8000/api/v4/query \
   -H "Content-Type: application/json" \
-  -d '{"question": "Java Spring 네이밍 컨벤션 요약해줘", "domain": "backend", "stack": "spring"}'
-
-# 두 스택 비교
-curl -X POST http://localhost:8000/api/v1/query \
-  -H "Content-Type: application/json" \
-  -d '{"question": "Java Spring과 Kotlin Spring 네이밍 컨벤션 차이점 알려줘"}'
+  -d '{"question": "프론트엔드 FSD 구조 규칙 알려줘", "debug": true}'
 ```
 
-### Python
-
-```python
-import httpx
-
-client = httpx.Client(base_url="http://localhost:8000")
-
-response = client.post("/api/v1/query", json={
-    "question": "파일 네이밍 컨벤션 전문 보여줘",
-    "domain": "frontend"
-})
-
-data = response.json()
-print(data["answer"])
-print(data["answer_type"])  # "fulltext"
+```bash
+curl http://localhost:8000/health
 ```
-
----
-
-## Slack 연동 가이드
-
-Slack Bolt 앱에서 이 API를 호출하는 기본 패턴이다.
-
-```python
-from slack_bolt import App
-import httpx
-
-app = App(token="xoxb-...")
-CHATBOT_API = "http://localhost:8000"
-
-@app.message("")
-def handle_message(message, say):
-    question = message.get("text", "")
-    if not question:
-        return
-
-    with httpx.Client() as client:
-        res = client.post(f"{CHATBOT_API}/api/v1/query", json={
-            "question": question
-        })
-
-    if res.status_code != 200:
-        say("오류가 발생했습니다. 잠시 후 다시 시도해주세요.")
-        return
-
-    data = res.json()
-    answer_type = data["answer_type"]
-    answer = data["answer"]
-
-    # answer_type에 따른 Slack 메시지 포맷
-    if answer_type == "clarify":
-        say(f":question: {answer}")
-    elif answer_type == "fulltext":
-        # 긴 원문은 파일로 업로드하거나 스레드로 이어 붙이는 것을 권장
-        say(f":page_facing_up: {answer[:2900]}...")
-    else:
-        say(answer)
-```
-
-**권장 사항:**
-- `answer_type == "fulltext"` 응답은 길 수 있으므로 Slack 파일 업로드(`files.upload`) 또는 스레드 분할을 사용할 것
-- `answer_type == "clarify"` 시 후보 문서 목록을 버튼 액션으로 안내하면 UX가 개선된다
-- `domain` / `stack` 힌트를 채널 ID나 사용자 프로필에서 추론하면 정확도가 높아진다
-
----
-
-## 웹 애플리케이션 연동 가이드
-
-### Next.js / React (fetch)
-
-```typescript
-interface QueryRequest {
-  question: string;
-  domain?: "frontend" | "backend";
-  stack?: string;
-}
-
-interface QueryResponse {
-  answer: string;
-  answer_type: "fulltext" | "summary" | "extract" | "discover" | "clarify";
-  intent: string;
-  resolved_document: {
-    canonical_doc_id: string;
-    title: string;
-    path: string;
-  } | null;
-  sources: Array<{ title: string; path: string; domain: string }>;
-}
-
-async function askConventionBot(req: QueryRequest): Promise<QueryResponse> {
-  const res = await fetch("/api/v1/query", {   // 프록시 설정 권장
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-  });
-  if (!res.ok) throw new Error("API 호출 실패");
-  return res.json();
-}
-```
-
-**answer_type별 렌더링 전략:**
-
-| answer_type | 권장 렌더링 |
-|-------------|------------|
-| `fulltext` | 마크다운 렌더러 (예: `react-markdown`) |
-| `summary` | 마크다운 렌더러, 축약 카드 UI |
-| `extract` | 마크다운 렌더러, 출처 하이라이트 |
-| `discover` | 구조화 카드 (제목/경로/섹션 목록) |
-| `clarify` | 후보 문서 선택 버튼 목록 |
-
-### CORS 설정
-
-웹 앱에서 직접 호출하려면 FastAPI에 CORS 미들웨어를 추가해야 한다.
-
-```python
-# src/api/main.py에 추가
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://your-app.example.com"],
-    allow_methods=["POST", "GET"],
-    allow_headers=["Content-Type"],
-)
-```
-
----
 
 ## 테스트 실행
 
-```bash
-# 단위 테스트 전체 실행 (41개)
-python -m pytest tests/ -v
+전체 테스트:
 
-# 특정 핸들러 테스트
-python -m pytest tests/test_compare_handler.py -v
+```bash
+pytest -q
 ```
 
----
+v4 테스트만:
+
+```bash
+pytest -q tests/rag_v4 tests/api/test_query_v4.py
+```
 
 ## 프로젝트 구조
 
-```
+```text
 developer-chat-bot-v3/
+├── ai-docs/
+│   └── rag-v4-greenfield-plan.md
+├── ai-work/
+│   ├── benchmarks/
+│   │   └── rag_v4_queries.json
+│   └── next-version-plan.md
+├── chat_ui/
+│   ├── app.py
+│   ├── config.py
+│   └── rag_client.py
 ├── docs/
-│   ├── fe_chunk_docs/       # FE 컨벤션 문서 (16개 마크다운)
-│   └── be_chunk_docs/       # BE 컨벤션 문서 (38개 마크다운, Java/Kotlin/NestJS)
-├── src/
-│   ├── convention_qa/       # 핵심 QA 파이프라인
-│   │   ├── query_understanding/    # Intent 분류
-│   │   ├── document_resolution/   # 문서 식별
-│   │   ├── action_routing/        # 핸들러 라우팅 및 실행
-│   │   ├── indexing/              # ChromaDB 인덱스 빌더
-│   │   └── response/              # 응답 포맷터
-│   └── api/                 # FastAPI 레이어
-│       └── routes/
-├── chat_ui/                 # Gradio 웹 채팅 UI (별도 프로세스)
-│   ├── app.py               # Gradio Blocks 앱 진입점 (localhost:7860)
-│   ├── rag_client.py        # RAG 서버 HTTP 클라이언트
-│   └── config.py            # RAG_SERVER_URL 환경변수 로딩
+│   ├── fe_chunk_docs/
+│   └── be_chunk_docs/
 ├── scripts/
-│   └── ingest.py            # 인덱스 빌드 CLI
-├── tests/                   # 단위 테스트
-├── .chroma/                 # ChromaDB 영속 스토리지 (gitignore)
+│   ├── benchmark_v4.py
+│   ├── ingest.py
+│   └── ingest_v4.py
+├── src/
+│   ├── api/
+│   │   ├── dependencies_v4.py
+│   │   ├── models_v4.py
+│   │   ├── main.py
+│   │   └── routes/
+│   │       ├── health.py
+│   │       └── query_v4.py
+│   ├── convention_qa/      # 기존 v3 코드
+│   └── rag_v4/
+│       ├── answering/
+│       ├── ingest/
+│       ├── retrieval/
+│       ├── config.py
+│       ├── models.py
+│       ├── normalization.py
+│       └── service.py
+├── tests/
+│   ├── api/
+│   └── rag_v4/
+├── .chroma/                # 기존 v3 인덱스
+├── .chroma_v4/             # 현재 v4 인덱스
 ├── requirements.txt
-└── .env                     # OPENAI_API_KEY, RAG_SERVER_URL
+└── .env
 ```
+
+## 운영 메모
+
+- v4는 metadata filter 기반 retrieval이 아니라 dense+sparse hybrid retrieval 기준이다.
+- `domain`, `framework`는 API 입력과 retrieval metadata에서 제거되어 있다.
+- baseline embedding model은 `text-embedding-3-small`이다.
+- BM25 경로는 [Chroma BM25 문서](https://docs.trychroma.com/integrations/embedding-models/chroma-bm25)를 기준으로 설계했다.

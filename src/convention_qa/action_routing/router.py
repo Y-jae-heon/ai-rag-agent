@@ -14,6 +14,7 @@ from src.convention_qa.action_routing.base_handler import (
 )
 from src.convention_qa.action_routing.clarify_handler import ClarifyHandler
 from src.convention_qa.action_routing.fulltext_handler import FulltextHandler
+from langsmith import traceable
 
 
 class ActionRouter:
@@ -109,6 +110,7 @@ class ActionRouter:
 
         return ClarifyHandler()
 
+    @traceable
     def route_and_execute(
         self,
         understanding: "QueryUnderstandingResult",

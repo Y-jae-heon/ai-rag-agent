@@ -1,0 +1,29 @@
+[
+  {
+    "question": "FSD 구조 규칙 알려줘",
+    "expected_docs": [
+      "FSD 레이어드 아키텍처 개요",
+      "FSD 레이어드 아키텍처 - 레이어 구조 규칙"
+    ]
+  },
+  {
+    "question": "프론트엔드 FSD 구조 규칙 알려줘",
+    "expected_docs": [
+      "FSD 레이어드 아키텍처 개요",
+      "FSD 레이어드 아키텍처 - 레이어 구조 규칙"
+    ]
+  },
+  {
+    "question": "Java에서 트랜잭션 관리하는 법 알려줘",
+    "expected_docs": [
+      "Java(Spring) 스프링 트랜잭션 관리"
+    ]
+  },
+  {
+    "question": "TypeScript NestJS 디렉토리 구조 알려줘",
+    "expected_docs": [
+      "Typescript(NestJS) 레이어드 아키텍처 디렉토리 구조"
+    ]
+  }
+]
+

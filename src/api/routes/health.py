@@ -1,41 +1,46 @@
-"""헬스 체크 라우터.
-
-ChromaDB 컬렉션 상태 및 ingest_manifest.json 정보를 반환한다.
-인덱스가 없어도 200 OK를 반환하며 status를 "degraded"로 표시한다.
-"""
+"""RAG v4 health route."""
 
 import json
 from typing import Any
 
 from fastapi import APIRouter
 
-from src.convention_qa.indexing.config import CHROMA_PERSIST_DIR
+from src.rag_v4.config import (
+    DOCUMENT_DENSE_COLLECTION,
+    SECTION_DENSE_COLLECTION,
+    SECTION_SPARSE_DIRNAME,
+    V4_PERSIST_DIR,
+)
 
 router = APIRouter()
 
-_REQUIRED_COLLECTIONS = ["document_index", "section_index", "chunk_index"]
-_MANIFEST_PATH = CHROMA_PERSIST_DIR / "ingest_manifest.json"
+_REQUIRED_INDICES = {
+    DOCUMENT_DENSE_COLLECTION: V4_PERSIST_DIR / DOCUMENT_DENSE_COLLECTION,
+    SECTION_DENSE_COLLECTION: V4_PERSIST_DIR / SECTION_DENSE_COLLECTION,
+    SECTION_SPARSE_DIRNAME: V4_PERSIST_DIR / SECTION_SPARSE_DIRNAME / "index.json",
+}
+_MANIFEST_PATH = V4_PERSIST_DIR / "ingest_manifest.json"
 
 
 @router.get("/health")
 async def health() -> dict[str, Any]:
-    """ChromaDB 컬렉션 상태 및 ingest_manifest.json 정보를 반환한다.
+    """RAG v4 인덱스 상태 및 ingest_manifest.json 정보를 반환한다.
 
-    인덱스가 없어도 200 OK를 반환하며, 누락된 컬렉션이 있으면
+    인덱스가 없어도 200 OK를 반환하며, 누락된 인덱스가 있으면
     status를 "degraded"로 표시한다.
 
     Returns:
         status: "ok" 또는 "degraded"
-        chroma_collections: 존재하는 컬렉션 목록
+        indices: 존재하는 인덱스 목록
         manifest: ingest_manifest.json 내용 (없으면 None)
     """
-    existing_collections: list[str] = [
+    existing_indices: list[str] = [
         name
-        for name in _REQUIRED_COLLECTIONS
-        if (CHROMA_PERSIST_DIR / name).exists()
+        for name, path in _REQUIRED_INDICES.items()
+        if path.exists()
     ]
 
-    status = "ok" if len(existing_collections) == len(_REQUIRED_COLLECTIONS) else "degraded"
+    status = "ok" if len(existing_indices) == len(_REQUIRED_INDICES) else "degraded"
 
     manifest: dict[str, Any] | None = None
     if _MANIFEST_PATH.exists():
@@ -47,6 +52,7 @@ async def health() -> dict[str, Any]:
 
     return {
         "status": status,
-        "chroma_collections": existing_collections,
+        "indices": existing_indices,
         "manifest": manifest,
+        "version": "v4",
     }

@@ -119,37 +119,37 @@ class DocumentResolver:
 
         # Step 1: exact_match
         
-        exact_candidate = exact_match(document_query, self._documents)
-        if exact_candidate is not None and exact_candidate.score >= self._threshold:
-            return DocumentResolutionResult(
-                resolved=True,
-                canonical_doc_id=exact_candidate.canonical_doc_id,
-                path=exact_candidate.path,
-                title=exact_candidate.title,
-                confidence=exact_candidate.score,
-                resolution_strategy="exact",
-                candidates=[exact_candidate],
-            )
+        # exact_candidate = exact_match(document_query, self._documents)
+        # if exact_candidate is not None and exact_candidate.score >= self._threshold:
+        #     return DocumentResolutionResult(
+        #         resolved=True,
+        #         canonical_doc_id=exact_candidate.canonical_doc_id,
+        #         path=exact_candidate.path,
+        #         title=exact_candidate.title,
+        #         confidence=exact_candidate.score,
+        #         resolution_strategy="exact",
+        #         candidates=[exact_candidate],
+        #     )
 
         # Step 2: alias_match
-        alias_candidate = alias_match(document_query, self._documents, self._alias_registry)
-        if alias_candidate is not None and alias_candidate.score >= self._threshold:
-            return DocumentResolutionResult(
-                resolved=True,
-                canonical_doc_id=alias_candidate.canonical_doc_id,
-                path=alias_candidate.path,
-                title=alias_candidate.title,
-                confidence=alias_candidate.score,
-                resolution_strategy="alias",
-                candidates=[alias_candidate],
-            )
+        # alias_candidate = alias_match(document_query, self._documents, self._alias_registry)
+        # if alias_candidate is not None and alias_candidate.score >= self._threshold:
+        #     return DocumentResolutionResult(
+        #         resolved=True,
+        #         canonical_doc_id=alias_candidate.canonical_doc_id,
+        #         path=alias_candidate.path,
+        #         title=alias_candidate.title,
+        #         confidence=alias_candidate.score,
+        #         resolution_strategy="alias",
+        #         candidates=[alias_candidate],
+        #     )
 
         # Step 3: semantic_search (domain/stack 필터 적용)
         semantic_candidates = semantic_search(
             document_query=document_query,
             persist_dir=self._persist_dir,
-            domain=domain,
-            stack=stack,
+            # domain=domain,
+            # stack=stack,
             threshold=self._threshold,
         )
 
@@ -167,7 +167,10 @@ class DocumentResolver:
             )
 
         # Step 5: 결과 평가
-        return self._evaluate_candidates(semantic_candidates, query=document_query)
+        result = self._evaluate_candidates(semantic_candidates, query=document_query)
+        print("\n\n\n -------- _evaluate_candidates START -------\n",result)
+        print("\n\n\n -------- _evaluate_candidates END -------\n")
+        return result
 
     def _evaluate_candidates(
         self,
@@ -228,7 +231,7 @@ class DocumentResolver:
         return DocumentResolutionResult(
             resolved=False,
             resolution_strategy="semantic",
-            confidence=best.score,
+            # confidence=best.score,
             candidates=candidates,
         )
 

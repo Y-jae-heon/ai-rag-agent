@@ -4,16 +4,14 @@ from chat_ui.config import RAG_SERVER_URL
 _TIMEOUT = 30.0
 
 
-def query(question: str, domain: str, stack: str) -> dict:
+def query(question: str, debug: bool) -> dict:
     payload = {
         "question": question,
-        "domain": None if domain == "auto" else domain,
-        "stack": None if stack == "auto" else stack,
-        "intent_hint": None,
+        "debug": debug,
     }
     try:
         with httpx.Client(timeout=_TIMEOUT) as client:
-            resp = client.post(f"{RAG_SERVER_URL}/api/v1/query", json=payload)
+            resp = client.post(f"{RAG_SERVER_URL}/api/v4/query", json=payload)
             resp.raise_for_status()
             return resp.json()
     except httpx.ConnectError:
